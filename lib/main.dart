@@ -24,7 +24,7 @@ class WithEgyptApp extends StatelessWidget {
         body: const Center(
           child: Text(
             'مرحباً بك في تطبيق With Egypt',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
       ),
