@@ -1,0 +1,31 @@
+package com.myshop.repairs.data
+
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
+
+data class Ticket(
+    val id: String = "",
+    val ticketNumber: Int = 0,
+    val customerName: String = "",
+    val status: String = "Received"
+)
+
+class FirestoreRepository {
+    private val db = try {
+        FirebaseFirestore.getInstance()
+    } catch (e: Exception) {
+        null
+    }
+
+    suspend fun addTicket(ticket: Ticket): String {
+        db ?: return "mock-id"
+        val ref = db.collection("tickets").add(ticket).await()
+        return ref.id
+    }
+
+    suspend fun listTickets(): List<Ticket> {
+        db ?: return List(5) { i -> Ticket(id = "mock-$i", ticketNumber = 1000 + i, customerName = "عميل $i") }
+        val snapshot = db.collection("tickets").get().await()
+        return snapshot.documents.mapNotNull { it.toObject(Ticket::class.java) }
+    }
+}
